@@ -20,13 +20,13 @@ import "https://github.com/Robsonsjre/FlashloanUsecases/blob/master/contracts/in
  * 4. Repay Aave loan
  * 5. Keep the profits
  */
-contract Arbitrageur is
+contract Arbitrageur is 
     FlashLoanReceiverBase(address(0x506B0B2CF20FAA8f38a4E2B524EE43e1f4458Cc5))
 {
     address public constant DAI_ADDRESS = 0xFf795577d9AC8bD7D90Ee22b6C1703490b6512FD;
-    address public constant BAT_ADDRESS = 0x2d12186Fbb9f9a8C28B3FfdD4c42920f8539D738;
-    address public constant UNISWAP_FACTORY_A = 0xECc6C0542710a0EF07966D7d1B10fA38bbb86523;
-    address public constant UNISWAP_FACTORY_B = 0x54Ac34e5cE84C501165674782582ADce2FDdc8F4;
+    address public constant MANA_ADDRESS = 0x738Dc6380157429e957d223e6333Dc385c85Fec7;
+    address public constant UNISWAP_FACTORY_B = 0xECc6C0542710a0EF07966D7d1B10fA38bbb86523;
+    address public constant UNISWAP_FACTORY_A = 0x54Ac34e5cE84C501165674782582ADce2FDdc8F4;
 
     ILendingPool public lendingPool;
     IUniswapExchange public exchangeA;
@@ -45,7 +45,7 @@ contract Arbitrageur is
         //Instantiate Uniswap Factory B
         uniswapFactoryB = IUniswapFactory(UNISWAP_FACTORY_B);
         // get Exchange B Address
-        address exchangeB_address = uniswapFactoryB.getExchange(BAT_ADDRESS);
+        address exchangeB_address = uniswapFactoryB.getExchange(MANA_ADDRESS);
         //Instantiate Exchange B
         exchangeB = IUniswapExchange(exchangeB_address);
         // get lendingPoolAddress
@@ -82,7 +82,7 @@ contract Arbitrageur is
         uint256 deadline = getDeadline();
 
         ERC20 dai = ERC20(DAI_ADDRESS);
-        ERC20 bat = ERC20(BAT_ADDRESS);
+        ERC20 mana = ERC20(MANA_ADDRESS);
 
         // Buying ETH at Exchange A
         require(
@@ -95,11 +95,11 @@ contract Arbitrageur is
             1,
             1,
             deadline,
-            BAT_ADDRESS
+            MANA_ADDRESS
         );
 
         require(
-            bat.approve(address(exchangeB), tokenBought),
+            mana.approve(address(exchangeB), tokenBought),
             "Could not approve DAI sell"
         );
 
